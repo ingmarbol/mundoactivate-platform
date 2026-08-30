@@ -1,0 +1,67 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: mundoactivate-db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${MOODLE_DB_NAME}
+      MARIADB_USER: ${MOODLE_DB_USER}
+      MARIADB_PASSWORD: ${MOODLE_DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - mundoactivate-internal
+    healthcheck:
+      test:
+        - CMD
+        - healthcheck.sh
+        - --connect
+        - --innodb_initialized
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    security_opt:
+      - no-new-privileges:true
+
+  moodle:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MOODLE_VERSION: ${MOODLE_VERSION:-5.0.2}
+    image: mundoactivate/moodle:5.0
+    container_name: mundoactivate-moodle
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      MOODLE_DB_HOST: mariadb
+      MOODLE_DB_NAME: ${MOODLE_DB_NAME}
+      MOODLE_DB_USER: ${MOODLE_DB_USER}
+      MOODLE_DB_PASSWORD: ${MOODLE_DB_PASSWORD}
+      MOODLE_WWWROOT: ${MOODLE_WWWROOT}
+    ports:
+      - "127.0.0.1:${MOODLE_HOST_PORT:-8080}:80"
+    volumes:
+      - moodle_data:/var/www/moodledata
+    networks:
+      - mundoactivate-internal
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://127.0.0.1/ >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  mundoactivate-internal:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+  moodle_data:
