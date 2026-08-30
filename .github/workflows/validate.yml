@@ -1,0 +1,34 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check repository for forbidden files
+        run: |
+          if find . -type f \( -name '.env' -o -name '*.pem' -o -name '*.key' -o -name '*.sql' -o -name '*.sql.gz' \) -not -path './.git/*' | grep -q .; then
+            echo 'Forbidden secret or data file detected.'
+            exit 1
+          fi
+
+      - name: Create non-secret validation environment
+        run: cp .env.example .env
+
+      - name: Validate Docker Compose
+        run: docker compose config --quiet
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: ./scripts
