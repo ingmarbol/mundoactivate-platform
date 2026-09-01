@@ -1,0 +1,76 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.14.0
+    container_name: monitoring-prometheus
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring_net
+
+  grafana:
+    image: grafana/grafana:13.2.0
+    container_name: monitoring-grafana
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - monitoring_net
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: monitoring-node-exporter
+    restart: unless-stopped
+    command:
+      - --path.rootfs=/host
+    volumes:
+      - /:/host:ro,rslave
+    networks:
+      - monitoring_net
+
+  cadvisor:
+    image: ghcr.io/google/cadvisor:v0.60.5
+    container_name: monitoring-cadvisor
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+    networks:
+      - monitoring_net
+
+  blackbox-exporter:
+    image: quay.io/prometheus/blackbox-exporter:latest
+    container_name: monitoring-blackbox
+    restart: unless-stopped
+    command:
+      - --config.file=/config/blackbox.yml
+    volumes:
+      - ./blackbox/blackbox.yml:/config/blackbox.yml:ro
+    networks:
+      - monitoring_net
+
+networks:
+  monitoring_net:
+    name: monitoring_net
+    external: true
+
+volumes:
+  prometheus_data:
+    name: monitoring_prometheus_data
+  grafana_data:
+    name: monitoring_grafana_data
