@@ -1,0 +1,31 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Create non-secret CI configuration
+        run: cp .env.example .env
+      - name: Validate Compose model
+        run: docker compose config --quiet
+      - name: Build application image
+        run: docker build --pull --tag activate:${{ github.sha }} .
+      - name: Show image evidence
+        run: docker image inspect activate:${{ github.sha }} --format '{{.Id}}'
