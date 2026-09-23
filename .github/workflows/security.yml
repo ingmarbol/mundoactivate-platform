@@ -33,6 +33,7 @@ jobs:
           exit-code: 1
 
       - name: Detect secrets with redacted output
+        if: always()
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
