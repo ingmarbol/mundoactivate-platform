@@ -1,0 +1,34 @@
+version: 1
+project: mundoactivate-platform
+owners:
+  platform: ingmarbol
+environments:
+  - dev
+  - test
+  - prod
+required_tags:
+  - Environment
+  - Owner
+  - CostCenter
+  - ManagedBy
+guardrails:
+  identity:
+    - federation_required
+    - mfa_required_for_humans
+    - break_glass_accounts_monitored
+    - workload_identities_preferred
+  security:
+    - centralized_audit_logging
+    - encryption_at_rest
+    - public_access_review
+    - secrets_outside_source_control
+  cost:
+    - budgets_per_environment
+    - anomaly_alerts
+    - owner_and_cost_center_tags
+  operations:
+    - backup_policy_defined
+    - retention_defined
+    - incident_owner_defined
+    - cleanup_procedure_defined
+
