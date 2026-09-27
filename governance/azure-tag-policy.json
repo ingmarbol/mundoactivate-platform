@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Require governance tags on resource groups",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Audits resource groups that omit Environment, Owner, CostCenter or ManagedBy.",
+    "metadata": {
+      "category": "Tags",
+      "version": "1.0.0"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          { "field": "type", "equals": "Microsoft.Resources/subscriptions/resourceGroups" },
+          {
+            "anyOf": [
+              { "field": "tags['Environment']", "exists": "false" },
+              { "field": "tags['Owner']", "exists": "false" },
+              { "field": "tags['CostCenter']", "exists": "false" },
+              { "field": "tags['ManagedBy']", "exists": "false" }
+            ]
+          }
+        ]
+      },
+      "then": { "effect": "audit" }
+    }
+  }
+}
+

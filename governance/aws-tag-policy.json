@@ -1,0 +1,20 @@
+{
+  "tags": {
+    "Environment": {
+      "tag_key": { "@@assign": "Environment" },
+      "tag_value": { "@@assign": ["dev", "test", "prod"] },
+      "enforced_for": { "@@assign": ["ec2:instance", "s3:bucket"] }
+    },
+    "Owner": {
+      "tag_key": { "@@assign": "Owner" }
+    },
+    "CostCenter": {
+      "tag_key": { "@@assign": "CostCenter" }
+    },
+    "ManagedBy": {
+      "tag_key": { "@@assign": "ManagedBy" },
+      "tag_value": { "@@assign": ["terraform", "bicep", "manual-approved"] }
+    }
+  }
+}
+
