@@ -1,0 +1,38 @@
+name: oidc-auth-example
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  validate-identity:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      # Choose ONE cloud block in a real workflow. The identifiers are
+      # non-secret repository variables; no access key or client secret is used.
+      - name: Authenticate to AWS with OIDC
+        if: ${{ vars.CLOUD_TARGET == 'aws' }}
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Authenticate to Azure with OIDC
+        if: ${{ vars.CLOUD_TARGET == 'azure' }}
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Verify that no static cloud secret is required
+        run: echo "OIDC authentication is selected for ${CLOUD_TARGET:-unset}."
+        env:
+          CLOUD_TARGET: ${{ vars.CLOUD_TARGET }}
+
