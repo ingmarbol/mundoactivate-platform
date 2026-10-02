@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: mundoactivate
+  namespace: argocd
+spec:
+  description: Guardrails for the MundoActivate GitOps laboratory
+  sourceRepos:
+    - https://github.com/ingmarbol/mundoactivate-platform.git
+  destinations:
+    - namespace: mundoactivate-dev
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceBlacklist:
+    - group: rbac.authorization.k8s.io
+      kind: RoleBinding
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+
