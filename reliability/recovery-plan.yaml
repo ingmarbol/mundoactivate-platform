@@ -1,0 +1,54 @@
+apiVersion: reliability.mundoactivate.io/v1alpha1
+kind: RecoveryPlan
+metadata:
+  name: mundoactivate-multicloud
+  owner: platform-engineering
+spec:
+  assumptions:
+    - Infrastructure is reproducible from reviewed IaC.
+    - Kubernetes desired state is versioned in Git.
+    - Sensitive values remain in provider secret stores.
+  services:
+    - name: web-application
+      tier: T1
+      owner: application-team
+      rto_minutes: 120
+      rpo_minutes: 15
+      strategy: warm-standby
+      backup_frequency: 15m
+      restore_test_frequency: quarterly
+      validation:
+        - health-endpoint
+        - authenticated-smoke-test
+    - name: relational-database
+      tier: T1
+      owner: database-team
+      rto_minutes: 120
+      rpo_minutes: 15
+      strategy: point-in-time-recovery
+      backup_frequency: continuous-logs-plus-daily-full
+      restore_test_frequency: monthly
+      validation:
+        - integrity-check
+        - business-query
+    - name: development-environment
+      tier: T3
+      owner: platform-engineering
+      rto_minutes: 1440
+      rpo_minutes: 1440
+      strategy: rebuild-from-iac-and-gitops
+      backup_frequency: daily
+      restore_test_frequency: semiannual
+      validation:
+        - deployment-ready
+        - service-reachable
+  governance:
+    incident_commander: on-call-platform-lead
+    failover_approver: service-owner
+    data_loss_approver: data-owner
+    evidence_retention_days: 365
+  security:
+    immutable_backup: true
+    isolated_restore_environment: true
+    cross_account_or_subscription_copy: true
+    secrets_in_repository: false
