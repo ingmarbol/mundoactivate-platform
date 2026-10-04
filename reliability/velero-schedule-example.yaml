@@ -1,0 +1,12 @@
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: mundoactivate-dev-example
+  namespace: velero
+spec:
+  schedule: "0 */6 * * *"
+  template:
+    includedNamespaces:
+      - mundoactivate-dev
+    snapshotMoveData: false
+    ttl: 720h0m0s
