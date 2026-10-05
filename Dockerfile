@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.5-apache
 
 ARG MOODLE_VERSION=5.0.2
 
