@@ -1,0 +1,40 @@
+apiVersion: reliability.mundoactivate.io/v1alpha1
+kind: ChaosExperiment
+metadata:
+  name: mundoactivate-dev-pod-recovery
+  owner: platform-engineering
+spec:
+  environment: development
+  hypothesis: >-
+    Deleting one web pod preserves at least 95 percent request success and the
+    Deployment restores steady state within 120 seconds.
+  steadyState:
+    observationWindowMinutes: 5
+    indicators:
+      - name: http-success-rate
+        threshold: ">=95%"
+      - name: available-replicas
+        threshold: ">=1"
+  fault:
+    type: kubernetes-pod-delete
+    namespace: mundoactivate-dev
+    selector:
+      app: mundoactivate-web
+    maximumTargets: 1
+    maximumDurationSeconds: 300
+  abortConditions:
+    - http-success-rate-below-95-for-30-seconds
+    - available-replicas-equals-zero
+    - unexpected-production-context
+  rollback:
+    - stop-fault-injection
+    - verify-deployment-desired-replicas
+    - restart-rollout-only-if-approved
+  evidence:
+    - preflight-output
+    - timestamped-probes
+    - kubernetes-events
+    - recovery-time
+  security:
+    secretsInRepository: false
+    productionAuthorized: false
