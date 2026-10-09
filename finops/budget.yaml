@@ -1,0 +1,16 @@
+currency: USD
+monthlyBudgetUsd: 150
+alertThresholdsPercent:
+  - 50
+  - 80
+  - 100
+businessUnits:
+  activeStudents: 120
+allocation:
+  requiredDimensions:
+    - provider
+    - environment
+    - owner
+security:
+  allowSensitiveTagValues: false
+  productionAutomationAuthorized: false

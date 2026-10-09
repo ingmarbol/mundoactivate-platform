@@ -1,0 +1,6 @@
+provider,service,environment,owner,cost_usd
+aws,eks,prod,platform,72.40
+azure,monitor,prod,platform,18.60
+aws,s3,shared,platform,6.20
+azure,aks,dev,platform,35.00
+aws,cloudwatch,prod,platform,9.80
