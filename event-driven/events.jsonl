@@ -1,0 +1,4 @@
+{"id":"evt-001","type":"course.completed.v1","source":"mundoactivate/lms","data":{"courseId":"cloud-101","studentRef":"anonymous-42"}}
+{"id":"evt-002","type":"certificate.requested.v1","source":"mundoactivate/api","data":{"courseId":"cloud-101","studentRef":"anonymous-42"}}
+{"id":"evt-001","type":"course.completed.v1","source":"mundoactivate/lms","data":{"courseId":"cloud-101","studentRef":"anonymous-42"}}
+{"type":"invalid.event","source":"mundoactivate/test","data":{}}
