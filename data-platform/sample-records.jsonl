@@ -1,0 +1,3 @@
+{"event_id":"evt-001","event_type":"course.completed.v1","occurred_at":"2026-10-13T20:00:00Z","tenant_id":"tenant-demo"}
+{"event_id":"evt-002","event_type":"lesson.viewed.v1","occurred_at":"2026-10-13T20:01:00Z","tenant_id":"tenant-demo"}
+{"event_id":"evt-003","event_type":"certificate.issued.v1","occurred_at":"2026-10-13T20:02:00Z","tenant_id":"tenant-demo"}
