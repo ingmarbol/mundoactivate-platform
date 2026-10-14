@@ -1,0 +1,11 @@
+product: learning-events
+owner: platform-team
+classification: internal
+retention_days: 30
+rto_minutes: 240
+rpo_minutes: 60
+required_fields:
+  - event_id
+  - event_type
+  - occurred_at
+  - tenant_id
