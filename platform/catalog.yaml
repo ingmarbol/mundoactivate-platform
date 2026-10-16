@@ -1,0 +1,6 @@
+{
+  "services": [
+    {"name":"learning-api","owner":"team-platform","lifecycle":"production","docs":true,"ci":true,"secret_scan":true,"image_scan":true,"observability":true,"runbook":true,"cost_owner":true},
+    {"name":"notification-worker","owner":"team-platform","lifecycle":"production","docs":false,"ci":true,"secret_scan":true,"image_scan":true,"observability":true,"runbook":true,"cost_owner":true}
+  ]
+}
