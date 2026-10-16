@@ -1,0 +1,14 @@
+{
+  "minimum_score": 80,
+  "blocking": ["owner", "secret_scan"],
+  "weights": {
+    "owner": 15,
+    "docs": 13,
+    "ci": 12,
+    "secret_scan": 15,
+    "image_scan": 12,
+    "observability": 13,
+    "runbook": 10,
+    "cost_owner": 10
+  }
+}
