@@ -1,0 +1,6 @@
+{
+  "bomFormat":"CycloneDX",
+  "specVersion":"1.6",
+  "subject":{"name":"app.txt","sha256":"84a2ef9c191d48390c2a9cda6fc01f4733a36989290ad4e86882953f1a8d2fda"},
+  "components":[{"type":"application","name":"mundoactivate-demo","version":"1.0.0"}]
+}
