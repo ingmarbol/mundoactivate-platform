@@ -1,0 +1,17 @@
+{
+  "networks": [
+    {"name":"aws-prod","cidr":"10.10.0.0/16","segment":"prod"},
+    {"name":"aws-nonprod","cidr":"10.20.0.0/16","segment":"nonprod"},
+    {"name":"azure-prod","cidr":"10.110.0.0/16","segment":"prod"},
+    {"name":"azure-nonprod","cidr":"10.120.0.0/16","segment":"nonprod"},
+    {"name":"shared","cidr":"10.200.0.0/16","segment":"shared"}
+  ],
+  "routes": [
+    {"from":"aws-prod","to":"shared","via":"inspection"},
+    {"from":"aws-nonprod","to":"shared","via":"inspection"},
+    {"from":"azure-prod","to":"shared","via":"inspection"},
+    {"from":"azure-nonprod","to":"shared","via":"inspection"}
+  ],
+  "dns_resolvers":[{"name":"resolver-a","zone":"a"},{"name":"resolver-b","zone":"b"}],
+  "default_route_owner":"security"
+}
