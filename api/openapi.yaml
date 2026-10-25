@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: Learning API
+  version: 1.0.0
+  x-owner: platform-team
+servers:
+  - url: https://api.example.invalid/v1
+paths:
+  /courses/{courseId}:
+    get:
+      operationId: getCourse
+      security:
+        - oauth2: [courses.read]
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema: {type: string, pattern: '^[a-zA-Z0-9-]{1,64}$'}
+      responses:
+        '200': {description: Course visible to the authorized tenant}
+        '401': {description: Authentication failed}
+        '403': {description: Object or scope authorization failed}
+        '429': {description: Rate limit exceeded}
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://identity.example.invalid/oauth2/authorize
+          tokenUrl: https://identity.example.invalid/oauth2/token
+          scopes:
+            courses.read: Read courses authorized for the tenant
