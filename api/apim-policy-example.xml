@@ -1,0 +1,15 @@
+<policies>
+  <inbound>
+    <base />
+    <validate-jwt header-name="Authorization" require-scheme="Bearer" require-expiration-time="true">
+      <openid-config url="https://identity.example.invalid/.well-known/openid-configuration" />
+      <audiences><audience>api://learning-api</audience></audiences>
+      <required-claims><claim name="scp" match="any"><value>courses.read</value></claim></required-claims>
+    </validate-jwt>
+    <rate-limit-by-key calls="120" renewal-period="60" counter-key="@(context.Principal?.Identity?.Name ?? context.Request.IpAddress)" />
+    <set-header name="x-correlation-id" exists-action="skip"><value>@(Guid.NewGuid().ToString())</value></set-header>
+  </inbound>
+  <backend><base /></backend>
+  <outbound><base /><set-header name="server" exists-action="delete" /></outbound>
+  <on-error><base /></on-error>
+</policies>
