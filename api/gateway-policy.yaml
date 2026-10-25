@@ -1,0 +1,33 @@
+api: learning-api
+owner: platform-team
+environment: nonprod
+authentication:
+  type: oauth2-jwt
+  issuer: https://identity.example.invalid/
+  audience: api://learning-api
+  algorithms: [RS256]
+  required_scopes: [courses.read]
+  require_expiration: true
+authorization:
+  object_level_check: true
+  tenant_claim: tenant_id
+transport:
+  tls_minimum: '1.2'
+  mtls_for_partners: true
+traffic:
+  rate_limit_per_minute: 120
+  burst_limit: 20
+  quota_per_day: 10000
+protection:
+  waf_enabled: true
+  max_body_bytes: 1048576
+  allowed_methods: [GET]
+observability:
+  access_logs: true
+  trace_context: true
+  redact_headers: [authorization, x-api-key, cookie]
+  redact_fields: [password, token, secret]
+  retention_days: 30
+cost:
+  cost_center: learning-platform
+  log_sampling_percent: 20
