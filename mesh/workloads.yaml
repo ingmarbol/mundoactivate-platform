@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: frontend, namespace: learning}
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: learning-api, namespace: learning}
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: learning-api-stable, namespace: learning}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: learning-api, version: stable}}
+  template:
+    metadata: {labels: {app: learning-api, version: stable}}
+    spec:
+      serviceAccountName: learning-api
+      automountServiceAccountToken: false
+      containers:
+        - name: api
+          image: nginxinc/nginx-unprivileged:1.27-alpine
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: 500m, memory: 256Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: learning-api, namespace: learning}
+spec:
+  selector: {app: learning-api}
+  ports: [{name: http, port: 80, targetPort: 8080}]
