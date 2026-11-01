@@ -1,0 +1,29 @@
+service: learning-api
+environment: nonprod
+slo:
+  availability_percent: 99.9
+  latency_p95_ms: 400
+  error_rate_percent: 1.0
+workload:
+  peak_rps: 180
+  average_service_time_ms: 120
+  concurrency_headroom_percent: 35
+  target_cpu_percent: 65
+  max_rps_per_pod: 45
+resources:
+  cpu_request_millicores: 300
+  cpu_limit_millicores: 750
+  memory_request_mib: 384
+  memory_limit_mib: 768
+autoscaling:
+  min_replicas: 4
+  max_replicas: 12
+  scale_down_stabilization_seconds: 300
+  metric: requests_per_second
+  warmup_seconds: 45
+guardrails:
+  max_monthly_compute_usd: 250
+  require_pdb: true
+  require_topology_spread: true
+  forbid_production_load_test: true
+

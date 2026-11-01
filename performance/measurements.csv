@@ -1,0 +1,6 @@
+scenario,rps,p95_ms,error_rate_percent,cpu_percent,memory_mib,replicas
+smoke,5,95,0.0,12,210,4
+average,90,240,0.2,48,275,4
+peak,180,355,0.7,63,322,6
+stress,240,610,2.8,88,410,6
+
