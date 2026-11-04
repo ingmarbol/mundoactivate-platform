@@ -1,0 +1,50 @@
+version: 1
+application: learning-platform
+classification: critical
+objectives:
+  rpo_minutes: 60
+  rto_minutes: 240
+  minimum_retention_days: 35
+  restore_test_frequency_days: 30
+controls:
+  encryption: customer_managed_key
+  immutable: true
+  cross_account_or_subscription_copy: true
+  separate_recovery_identity: true
+  multi_party_approval: true
+  audit_logging: true
+  malware_scan_before_restore: true
+workloads:
+  - name: application-state
+    source: EKS-AKS
+    method: cluster-resources-plus-persistent-volumes
+    owner: platform-team
+    priority: 2
+  - name: relational-database
+    source: RDS-Azure-SQL
+    method: point-in-time-plus-snapshot
+    owner: data-team
+    priority: 1
+  - name: container-images
+    source: ECR-ACR
+    method: cross-region-replication
+    owner: platform-team
+    priority: 3
+  - name: infrastructure-definition
+    source: Git-Terraform-Bicep
+    method: protected-repository
+    owner: cloud-team
+    priority: 1
+recovery_sequence:
+  - establish_clean_room
+  - recover_identity_and_network
+  - restore_data_services
+  - restore_cluster_and_storage
+  - deploy_applications_from_trusted_artifacts
+  - validate_security_and_business_transactions
+  - authorize_failback
+cleanup:
+  delete_temporary_restore_resources: true
+  revoke_temporary_access: true
+  preserve_evidence: true
+

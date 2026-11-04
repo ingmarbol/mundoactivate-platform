@@ -1,0 +1,5 @@
+test_id,workload,recovery_point_age_minutes,restore_duration_minutes,integrity_check,business_check,cleanup_complete
+RT-001,relational-database,42,96,pass,pass,true
+RT-001,application-state,42,168,pass,pass,true
+RT-001,infrastructure-definition,15,32,pass,pass,true
+
