@@ -1,0 +1,29 @@
+workloads:
+  - name: mundoactivate-api
+    environment: prod
+    image: ghcr.io/ingmarbol/mundoactivate@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    security_context:
+      run_as_non_root: true
+      read_only_root_filesystem: true
+      privileged: false
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+  - name: telemetry-worker
+    environment: nonprod
+    image: ghcr.io/ingmarbol/telemetry@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    security_context:
+      run_as_non_root: true
+      read_only_root_filesystem: true
+      privileged: false
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
