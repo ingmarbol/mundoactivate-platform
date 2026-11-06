@@ -1,0 +1,45 @@
+version: 1
+evaluation_date: 2026-11-05
+mode: audit_then_enforce
+
+cloud:
+  aws:
+    preventive:
+      - scp-deny-unapproved-regions
+      - scp-deny-disable-security-services
+    detective:
+      - config-encryption
+      - config-public-access
+    remediation: approval_required
+  azure:
+    preventive:
+      - policy-allowed-locations
+      - policy-deny-public-ip-prod
+    detective:
+      - policy-diagnostics
+      - policy-encryption
+    remediation: managed_identity
+
+kubernetes:
+  engine: kyverno
+  failure_action_prod: Enforce
+  failure_action_nonprod: Audit
+  required:
+    run_as_non_root: true
+    read_only_root_filesystem: true
+    disallow_privileged: true
+    require_resources: true
+
+exceptions:
+  - id: EX-001
+    control: require-read-only-root
+    owner: platform-team
+    environment: nonprod
+    expires_on: 2026-12-01
+    justification: legacy workload migration
+    ticket: SEC-142
+
+evidence:
+  retention_days: 365
+  owner: security-governance
+  ticket_required: true
