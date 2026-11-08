@@ -1,0 +1,5 @@
+{"timestamp":"2026-11-07T23:10:00Z","provider":"aws","source":"guardduty","severity":"HIGH","entity":"arn:aws:iam::111122223333:role/mundoactivate-api","event":"anomalous-api-calls","correlation_id":"IR-2026-031"}
+{"timestamp":"2026-11-07T23:13:00Z","provider":"aws","source":"cloudtrail","severity":"HIGH","entity":"arn:aws:iam::111122223333:role/mundoactivate-api","event":"CreateAccessKey","correlation_id":"IR-2026-031"}
+{"timestamp":"2026-11-07T23:18:00Z","provider":"kubernetes","source":"eks-audit","severity":"CRITICAL","entity":"pod/mundoactivate-api-7d9f","event":"exec-into-container","correlation_id":"IR-2026-031"}
+{"timestamp":"2026-11-07T23:25:00Z","provider":"azure","source":"entra-signin-logs","severity":"MEDIUM","entity":"incident-response-managed-identity","event":"correlated-signin-review","correlation_id":"IR-2026-031"}
+
