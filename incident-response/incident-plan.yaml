@@ -1,0 +1,77 @@
+version: 1
+plan_id: IR-MULTICLOUD-001
+time_standard: UTC
+severity_levels: [SEV1, SEV2, SEV3, SEV4]
+
+roles:
+  incident_commander: security-lead
+  cloud_lead: platform-team
+  forensics_lead: security-operations
+  communications_lead: service-owner
+  legal_contact: legal-and-compliance
+
+phases:
+  - preparation
+  - detection
+  - analysis
+  - containment
+  - eradication
+  - recovery
+  - lessons_learned
+
+containment:
+  automatic_actions:
+    - open_incident_ticket
+    - preserve_alert_context
+    - notify_on_call
+  approval_required:
+    - disable_identity
+    - isolate_workload
+    - revoke_sessions
+    - block_network_path
+    - delete_resource
+
+evidence:
+  case_id_format: IR-YYYY-NNN
+  hash_algorithm: sha256
+  immutable_storage: true
+  chain_of_custody_required: true
+  retention_days: 365
+  encryption: true
+
+aws:
+  identity: incident-response-role
+  data_sources:
+    - cloudtrail-organization-trail
+    - guardduty-findings
+    - security-hub-findings
+    - vpc-flow-logs
+    - eks-audit-logs
+  containment_account: security-tooling
+
+azure:
+  identity: incident-response-managed-identity
+  data_sources:
+    - activity-log
+    - entra-signin-logs
+    - defender-for-cloud-alerts
+    - sentinel-incidents
+    - aks-audit-admin
+  containment_subscription: security-management
+
+kubernetes:
+  preserve_before_restart: true
+  collect:
+    - audit-events
+    - pod-spec
+    - pod-logs
+    - events
+    - image-digest
+    - node-context
+
+recovery:
+  known_good_artifacts_only: true
+  require_security_validation: true
+  require_business_validation: true
+  heightened_monitoring_hours: 24
+
