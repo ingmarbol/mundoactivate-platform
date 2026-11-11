@@ -1,0 +1,72 @@
+threats:
+  - id: TM-001
+    stride: Spoofing
+    asset: user-session
+    component: api-gateway
+    attack_path: stolen-token -> api-gateway -> application
+    likelihood: 4
+    impact: 5
+    response: mitigate
+    controls: [oidc-validation, short-token-ttl, mfa, anomaly-detection]
+    owner: identity-team
+    acceptance_criteria: invalid or expired tokens return 401
+    status: mitigated
+  - id: TM-002
+    stride: Tampering
+    asset: container-image
+    component: application
+    attack_path: compromised-pipeline -> unsigned-image -> cluster
+    likelihood: 3
+    impact: 5
+    response: mitigate
+    controls: [image-by-digest, signed-provenance, admission-policy]
+    owner: platform-team
+    acceptance_criteria: unsigned images are denied in production
+    status: mitigated
+  - id: TM-003
+    stride: Information Disclosure
+    asset: learning-records
+    component: database
+    attack_path: overprivileged-workload -> database -> bulk-read
+    likelihood: 3
+    impact: 5
+    response: mitigate
+    controls: [workload-identity, least-privilege, private-endpoint, audit-alert]
+    owner: data-team
+    acceptance_criteria: workload can read only its required schema
+    status: mitigated
+  - id: TM-004
+    stride: Denial of Service
+    asset: platform-availability
+    component: api-gateway
+    attack_path: request-flood -> gateway -> application
+    likelihood: 4
+    impact: 4
+    response: mitigate
+    controls: [waf, rate-limit, autoscaling, circuit-breaker]
+    owner: sre-team
+    acceptance_criteria: load test remains inside latency and error SLO
+    status: mitigated
+  - id: TM-005
+    stride: Elevation of Privilege
+    asset: cloud-control-plane
+    component: application
+    attack_path: pod-compromise -> node-metadata -> cloud-role
+    likelihood: 2
+    impact: 5
+    response: mitigate
+    controls: [workload-identity, metadata-restriction, non-root, runtime-detection]
+    owner: cloud-security
+    acceptance_criteria: pod cannot obtain node or unrelated workload credentials
+    status: mitigated
+
+risk_policy:
+  critical_threshold: 20
+  high_threshold: 12
+  unresolved_critical_allowed: false
+  accepted_risk_requires:
+    - owner
+    - justification
+    - expires_on
+    - approval
+
