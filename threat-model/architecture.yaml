@@ -1,0 +1,72 @@
+version: 1
+system: mundoactivate-platform
+data_classification: confidential
+
+external_entities:
+  - id: user
+    authentication: oidc
+  - id: github-actions
+    authentication: workload-identity
+
+trust_boundaries:
+  - id: internet-edge
+    controls: [waf, tls, rate-limit]
+  - id: cloud-control-plane
+    controls: [mfa, least-privilege, audit-logs]
+  - id: kubernetes-cluster
+    controls: [network-policy, admission-policy, workload-identity]
+  - id: data-plane
+    controls: [encryption, private-endpoint, backup]
+
+components:
+  - id: api-gateway
+    type: process
+    boundary: internet-edge
+    provider: multicloud
+  - id: application
+    type: process
+    boundary: kubernetes-cluster
+    provider: eks-aks
+  - id: database
+    type: data-store
+    boundary: data-plane
+    provider: aws-azure
+  - id: telemetry
+    type: process
+    boundary: cloud-control-plane
+    provider: cloudwatch-azure-monitor
+
+data_flows:
+  - id: F1
+    source: user
+    destination: api-gateway
+    data: session-and-request
+    protocol: https
+    crosses_boundary: true
+  - id: F2
+    source: api-gateway
+    destination: application
+    data: authenticated-request
+    protocol: https
+    crosses_boundary: true
+  - id: F3
+    source: application
+    destination: database
+    data: learning-records
+    protocol: tls
+    crosses_boundary: true
+  - id: F4
+    source: application
+    destination: telemetry
+    data: redacted-telemetry
+    protocol: otlp-tls
+    crosses_boundary: true
+
+security_requirements:
+  - authenticate-every-request
+  - authorize-object-access
+  - encrypt-in-transit-and-at-rest
+  - prevent-secret-in-source
+  - preserve-audit-trail
+  - recover-within-rto-rpo
+

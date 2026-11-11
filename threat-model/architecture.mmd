@@ -1,0 +1,6 @@
+flowchart TD
+    U[User] -->|HTTPS + OIDC| G[API Gateway]
+    G -->|Authenticated HTTPS| K[EKS / AKS Application]
+    K -->|TLS + Workload Identity| D[(Managed Database)]
+    K -->|OTLP/TLS redacted| O[CloudWatch / Azure Monitor]
+
