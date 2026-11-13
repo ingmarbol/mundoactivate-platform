@@ -1,0 +1,52 @@
+assignments:
+  - id: aws-prod-operator
+    identity_type: human
+    platform: aws
+    subject: platform-operators
+    access: eligible
+    privilege: elevated
+    session_minutes: 60
+    approval_group: security-approvers
+    owner: cloud-platform
+    review_days: 90
+
+  - id: azure-prod-operator
+    identity_type: human
+    platform: azure
+    subject: platform-operators
+    access: eligible
+    privilege: elevated
+    session_minutes: 60
+    approval_group: security-approvers
+    owner: cloud-platform
+    review_days: 90
+
+  - id: eks-application
+    identity_type: workload
+    platform: aws
+    subject: system:serviceaccount:app:api
+    access: pod_identity
+    privilege: scoped
+    static_credentials: false
+    owner: application-team
+    review_days: 90
+
+  - id: aks-application
+    identity_type: workload
+    platform: azure
+    subject: system:serviceaccount:app:api
+    access: workload_identity
+    privilege: scoped
+    static_credentials: false
+    owner: application-team
+    review_days: 90
+
+  - id: github-deployer
+    identity_type: workload
+    platform: multicloud
+    subject: repo:ingmarbol/mundoactivate-platform:environment:production
+    access: oidc_federation
+    privilege: deployment_only
+    static_credentials: false
+    owner: devsecops
+    review_days: 90
