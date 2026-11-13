@@ -1,0 +1,44 @@
+version: 1
+review_date: 2026-11-12
+principles:
+  - least_privilege
+  - just_in_time
+  - separation_of_duties
+  - no_shared_accounts
+
+aws:
+  workforce_identity: iam_identity_center
+  provisioning: scim
+  privileged_access:
+    max_session_minutes: 60
+    approval_required: true
+    justification_required: true
+    phishing_resistant_mfa: true
+  access_analyzer:
+    external_access: true
+    unused_access: true
+  emergency_access_roles: 2
+
+azure:
+  workforce_identity: entra_id
+  pim:
+    activation_max_minutes: 60
+    approval_required: true
+    justification_required: true
+    phishing_resistant_mfa: true
+  access_reviews:
+    cadence_days: 90
+    apply_results: true
+    remove_on_denial: true
+  emergency_access_accounts: 2
+
+kubernetes:
+  human_access: short_lived_federated
+  workload_identity_required: true
+  permanent_cluster_admin: false
+  namespace_roles_preferred: true
+
+exceptions:
+  max_expiry_days: 90
+  owner_required: true
+  compensating_controls_required: true
