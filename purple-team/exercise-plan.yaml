@@ -1,0 +1,40 @@
+version: 1
+exercise_id: PT-2026-034
+date: 2026-11-14
+authorization:
+  approved: true
+  approver: security-director
+  ticket: CHG-SYNTHETIC-034
+  scope: non-production
+  start_utc: 2026-11-15T01:00:00Z
+  end_utc: 2026-11-15T02:30:00Z
+roles:
+  white_team: security-governance
+  red_team: validation-engineering
+  blue_team: security-operations
+  platform_team: cloud-platform
+safety:
+  synthetic_data_only: true
+  sample_findings_only: true
+  kill_switch_owner: white-team-lead
+  stop_conditions:
+    - production_impact
+    - unexpected_cost_growth
+    - unavailable_logging
+    - real_credential_exposure
+  prohibited:
+    - destructive_actions
+    - persistence
+    - credential_dumping
+    - denial_of_service
+    - data_exfiltration
+targets:
+  aws_account: sandbox
+  azure_subscription: sandbox
+  kubernetes_cluster: kind-purple-lab
+  application: local-platform-api
+cleanup:
+  owner: cloud-platform
+  deadline_minutes: 30
+  verify_no_test_resources: true
+  archive_evidence_days: 90

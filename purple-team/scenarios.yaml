@@ -1,0 +1,65 @@
+scenarios:
+  - id: PT-001
+    name: AWS sample finding delivery
+    platform: aws
+    technique: T1078.004
+    tactic: Initial Access
+    stimulus: guardduty_sample_finding
+    safe_mode: sample
+    data_sources: [GuardDuty, EventBridge, CloudWatch]
+    expected_detection: sample finding reaches triage route
+    owner: aws-security
+    success_criteria: alert tagged as exercise and routed without containment
+    cleanup: archive sample finding and close exercise incident
+
+  - id: PT-002
+    name: Azure sample alert delivery
+    platform: azure
+    technique: T1078.004
+    tactic: Initial Access
+    stimulus: defender_for_cloud_sample_alert
+    safe_mode: sample
+    data_sources: [Defender for Cloud, Microsoft Sentinel, Azure Monitor]
+    expected_detection: sample alert creates an exercise incident
+    owner: azure-security
+    success_criteria: incident receives owner and exercise tag
+    cleanup: close sample incident with benign classification
+
+  - id: PT-003
+    name: Kubernetes secret access simulation
+    platform: kubernetes
+    technique: T1552.007
+    tactic: Credential Access
+    stimulus: synthetic_audit_event
+    safe_mode: synthetic
+    data_sources: [Kubernetes audit, Defender for Containers, GuardDuty EKS Protection]
+    expected_detection: suspicious secret read is correlated to service account
+    owner: container-security
+    success_criteria: alert contains namespace, service account and resource
+    cleanup: delete test namespace and verify audit delivery
+
+  - id: PT-004
+    name: CI/CD trust policy violation
+    platform: multicloud
+    technique: T1550.001
+    tactic: Defense Evasion
+    stimulus: rejected_oidc_claim_fixture
+    safe_mode: synthetic
+    data_sources: [GitHub Actions, CloudTrail, Entra audit]
+    expected_detection: denied federation attempt is visible and correlated
+    owner: devsecops
+    success_criteria: pipeline fails and no cloud session is issued
+    cleanup: remove temporary fixture and retain workflow evidence
+
+  - id: PT-005
+    name: Application authorization abuse case
+    platform: application
+    technique: T1210
+    tactic: Lateral Movement
+    stimulus: synthetic_cross_tenant_request
+    safe_mode: synthetic
+    data_sources: [API gateway logs, Application logs, OpenTelemetry]
+    expected_detection: repeated denied cross-tenant access creates an alert
+    owner: application-security
+    success_criteria: requests remain 403 and tenant identifiers are redacted
+    cleanup: remove synthetic traces according to retention policy

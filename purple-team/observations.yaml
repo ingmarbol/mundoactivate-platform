@@ -1,0 +1,39 @@
+exercise_id: PT-2026-034
+objectives:
+  minimum_detection_coverage_percent: 80
+  maximum_mttd_minutes: 10
+  maximum_mttr_minutes: 30
+observations:
+  - scenario_id: PT-001
+    detected: true
+    mttd_minutes: 2
+    mttr_minutes: 12
+    evidence_id: EVD-034-001
+    test_status: passed
+  - scenario_id: PT-002
+    detected: true
+    mttd_minutes: 4
+    mttr_minutes: 16
+    evidence_id: EVD-034-002
+    test_status: passed
+  - scenario_id: PT-003
+    detected: true
+    mttd_minutes: 6
+    mttr_minutes: 20
+    evidence_id: EVD-034-003
+    test_status: passed
+  - scenario_id: PT-004
+    detected: true
+    mttd_minutes: 8
+    mttr_minutes: 22
+    evidence_id: EVD-034-004
+    test_status: passed
+  - scenario_id: PT-005
+    detected: false
+    evidence_id: EVD-034-005
+    test_status: gap_accepted_for_remediation
+    gap:
+      owner: application-security
+      priority: high
+      remediation_due: 2026-11-28
+      action: add a correlation rule for repeated cross-tenant 403 responses
