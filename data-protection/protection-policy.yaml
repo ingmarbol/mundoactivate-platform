@@ -1,0 +1,29 @@
+version: 1
+principles: [data_minimization, purpose_limitation, privacy_by_design, least_privilege, encryption_everywhere]
+aws:
+  macie_enabled: true
+  kms_customer_managed_keys: true
+  kms_rotation: true
+  s3_block_public_access: true
+  s3_object_lock_for_backup: true
+azure:
+  purview_classification: true
+  dlp_enabled: true
+  storage_customer_managed_keys: true
+  key_vault_rbac: true
+  key_vault_purge_protection: true
+  private_endpoints: true
+kubernetes:
+  secrets_encryption_at_rest: true
+  kms_v2_or_managed_equivalent: true
+  external_secret_store: true
+  short_lived_service_account_tokens: true
+observability:
+  allow_attributes: [exercise.id, service.name, cloud.region, k8s.namespace.name, http.status_code]
+  deny_attributes: [authorization, cookie, token, user.email, request.body]
+  payload_capture: false
+governance:
+  cross_border_approval: true
+  deletion_evidence: true
+  immutable_backup: true
+  quarterly_access_review: true

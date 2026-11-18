@@ -1,0 +1,34 @@
+version: 1
+flows:
+  - id: DF-001
+    source: end-user
+    destination: api-gateway
+    classification: confidential
+    encryption_in_transit: tls-1.2-plus
+    identity: oidc
+    residency: [us-east-1, eastus2]
+    logging: redacted
+  - id: DF-002
+    source: application-api
+    destination: operational-database
+    classification: restricted
+    encryption_in_transit: tls-1.2-plus
+    identity: workload-identity
+    residency: [us-east-1, eastus2]
+    logging: metadata-only
+  - id: DF-003
+    source: operational-database
+    destination: immutable-backup
+    classification: restricted
+    encryption_in_transit: tls-1.2-plus
+    identity: managed-identity
+    residency: [us-east-1, eastus2]
+    logging: metadata-only
+  - id: DF-004
+    source: application-api
+    destination: observability-backend
+    classification: internal
+    encryption_in_transit: tls-1.2-plus
+    identity: workload-identity
+    residency: [us-east-1, eastus2]
+    logging: allowlist-redacted

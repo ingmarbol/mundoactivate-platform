@@ -1,0 +1,45 @@
+version: 1
+review_date: 2026-11-17
+classes:
+  public: {encryption_at_rest: true, dlp_mode: monitor}
+  internal: {encryption_at_rest: true, dlp_mode: monitor}
+  confidential: {encryption_at_rest: true, dlp_mode: block, tokenization: true}
+  restricted: {encryption_at_rest: true, dlp_mode: block, tokenization: true, immutable_backup: true, jit_access: true}
+datasets:
+  - id: user-profile
+    class: confidential
+    owner: data-governance
+    pii: true
+    purpose: account_management
+    lawful_basis: contract
+    retention_days: 365
+    allowed_regions: [us-east-1, eastus2]
+    tokenization: true
+    dlp_mode: block
+  - id: payment-reference
+    class: restricted
+    owner: security-data
+    pii: true
+    purpose: payment_reconciliation
+    lawful_basis: contract
+    retention_days: 90
+    allowed_regions: [us-east-1, eastus2]
+    tokenization: true
+    dlp_mode: block
+    immutable_backup: true
+    jit_access: true
+  - id: learning-events
+    class: internal
+    owner: product-analytics
+    pii: false
+    purpose: service_improvement
+    retention_days: 180
+    allowed_regions: [us-east-1, eastus2]
+  - id: platform-telemetry
+    class: internal
+    owner: sre
+    pii: false
+    purpose: reliability
+    retention_days: 30
+    allowed_regions: [us-east-1, eastus2]
+    contains_payload: false
