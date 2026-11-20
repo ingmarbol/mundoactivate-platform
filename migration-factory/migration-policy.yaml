@@ -1,0 +1,35 @@
+version: 1
+allowed_strategies: [retire, retain, rehost, relocate, repurchase, replatform, refactor]
+foundation:
+  landing_zone_ready: true
+  private_connectivity: true
+  centralized_identity: true
+  centralized_logging: true
+  budget_alerts: true
+security:
+  oidc_or_managed_identity: true
+  no_long_lived_cloud_keys: true
+  encryption_in_transit: true
+  encryption_at_rest: true
+  secrets_externalized: true
+  sast_sca_image_secret_scans: true
+  data_residency_validated: true
+delivery:
+  infrastructure_as_code: true
+  immutable_artifacts: true
+  progressive_delivery: true
+  approval_for_production: true
+  rollback_automated_or_rehearsed: true
+validation:
+  functional: true
+  security: true
+  performance: true
+  backup_restore: true
+  observability: true
+  business_acceptance: true
+post_migration:
+  hypercare: true
+  cost_baseline: true
+  legacy_decommission_approved: true
+  lessons_learned: true
+  cmdb_updated: true

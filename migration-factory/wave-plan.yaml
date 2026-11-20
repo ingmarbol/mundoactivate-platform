@@ -1,0 +1,36 @@
+version: 1
+waves:
+  - id: W0
+    name: foundation-and-retirement
+    environments: [sandbox]
+    workloads: [APP-003]
+    prerequisites: [landing-zone, network-connectivity, identity-federation, centralized-logging]
+    entry_gate: approved-inventory
+    exit_gate: foundation-ready
+    rollback_window_minutes: 60
+    cost_ceiling_usd: 50
+  - id: W1
+    name: platform-nonproduction
+    environments: [development, qa]
+    workloads: [APP-001, IDP-001, DB-001]
+    prerequisites: [private-dns, oidc, backup-restore-test, data-protection-baseline]
+    entry_gate: replication-and-build-ready
+    exit_gate: functional-security-performance-tests
+    rollback_window_minutes: 120
+    cost_ceiling_usd: 250
+  - id: W2
+    name: application-modernization
+    environments: [staging, production]
+    workloads: [APP-002, JOB-001]
+    prerequisites: [change-approved, runbook-rehearsed, business-owner-go, observability-slo]
+    entry_gate: cutover-readiness-review
+    exit_gate: hypercare-complete
+    rollback_window_minutes: 180
+    cost_ceiling_usd: 400
+cutover:
+  freeze_window: true
+  dns_ttl_reduced: true
+  final_sync_required: true
+  business_validation_required: true
+  rollback_trigger: "error_rate_gt_2_percent_or_slo_breach"
+  hypercare_hours: 24
