@@ -1,0 +1,93 @@
+version: 1
+assessment_date: 2026-11-19
+workloads:
+  - id: APP-001
+    name: containerized-platform
+    owner: platform-team
+    source: local-kubernetes
+    dependencies: [DB-001, IDP-001]
+    criticality: medium
+    strategy: relocate
+    target: aws-eks
+    wave: W1
+    data_classification: confidential
+    rto_minutes: 60
+    rpo_minutes: 15
+    allowed_downtime_minutes: 30
+    observability: opentelemetry
+    rollback_defined: true
+  - id: IDP-001
+    name: identity-integration
+    owner: identity-team
+    source: static-service-credentials
+    dependencies: []
+    criticality: high
+    strategy: refactor
+    target: oidc-workload-identity
+    wave: W1
+    data_classification: confidential
+    rto_minutes: 30
+    rpo_minutes: 5
+    allowed_downtime_minutes: 15
+    observability: native-plus-opentelemetry
+    rollback_defined: true
+  - id: APP-002
+    name: legacy-admin-portal
+    owner: application-team
+    source: windows-iis
+    dependencies: [DB-001, IDP-001]
+    criticality: medium
+    strategy: replatform
+    target: azure-app-service
+    wave: W2
+    data_classification: internal
+    rto_minutes: 120
+    rpo_minutes: 30
+    allowed_downtime_minutes: 45
+    observability: opentelemetry
+    rollback_defined: true
+  - id: DB-001
+    name: platform-database
+    owner: database-team
+    source: self-managed-mariadb
+    dependencies: []
+    criticality: high
+    strategy: replatform
+    target: managed-relational-database
+    wave: W1
+    data_classification: restricted
+    rto_minutes: 30
+    rpo_minutes: 5
+    allowed_downtime_minutes: 15
+    observability: native-plus-opentelemetry
+    rollback_defined: true
+  - id: JOB-001
+    name: scheduled-reporting
+    owner: data-team
+    source: linux-cron
+    dependencies: [DB-001]
+    criticality: low
+    strategy: refactor
+    target: kubernetes-cronjob
+    wave: W2
+    data_classification: confidential
+    rto_minutes: 240
+    rpo_minutes: 60
+    allowed_downtime_minutes: 120
+    observability: opentelemetry
+    rollback_defined: true
+  - id: APP-003
+    name: unused-license-server
+    owner: infrastructure-team
+    source: windows-vm
+    dependencies: []
+    criticality: low
+    strategy: retire
+    target: none
+    wave: W0
+    data_classification: internal
+    rto_minutes: 1440
+    rpo_minutes: 1440
+    allowed_downtime_minutes: 1440
+    observability: none
+    rollback_defined: true
