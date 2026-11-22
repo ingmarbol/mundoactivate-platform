@@ -1,0 +1,36 @@
+version: 1
+ownership:
+  service_catalog_required: true
+  on_call_required: true
+  runbook_required: true
+incident:
+  severity_model: true
+  incident_commander: true
+  blameless_postmortem: true
+  stakeholder_communications: true
+automation:
+  idempotent_runbooks: true
+  destructive_action_approval: true
+  rollback_required: true
+  audit_trail: true
+observability:
+  cloudwatch: true
+  azure_monitor: true
+  opentelemetry: true
+  correlation_keys: [service.name, deployment.environment.name, trace_id]
+aiops:
+  human_in_the_loop: true
+  evidence_links_required: true
+  confidence_required: true
+  destructive_auto_actions_forbidden: true
+  feedback_loop: true
+toil:
+  quarterly_measurement: true
+  automation_backlog: true
+  max_manual_operational_work_percent: 50
+readiness:
+  backup_restore_test: true
+  capacity_review: true
+  dependency_review: true
+  security_review: true
+  cost_review: true
