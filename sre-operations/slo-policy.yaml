@@ -1,0 +1,26 @@
+version: 1
+slos:
+  - service: platform-api
+    name: api-availability
+    indicator: successful_requests_ratio
+    target_percent: 99.9
+    window_days: 30
+    burn_rate_alerts: [{rate: 14.4, window: 1h}, {rate: 6.0, window: 6h}]
+  - service: platform-db
+    name: db-availability
+    indicator: successful_connections_ratio
+    target_percent: 99.95
+    window_days: 30
+    burn_rate_alerts: [{rate: 14.4, window: 1h}, {rate: 6.0, window: 6h}]
+  - service: identity-service
+    name: auth-success
+    indicator: successful_authentications_ratio
+    target_percent: 99.9
+    window_days: 30
+    burn_rate_alerts: [{rate: 14.4, window: 1h}, {rate: 6.0, window: 6h}]
+  - service: reporting-worker
+    name: report-completion
+    indicator: jobs_completed_on_time_ratio
+    target_percent: 99.0
+    window_days: 30
+    burn_rate_alerts: [{rate: 14.4, window: 1h}, {rate: 6.0, window: 6h}]
