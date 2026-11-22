@@ -1,0 +1,38 @@
+version: 1
+services:
+  - id: platform-api
+    name: Platform API
+    owner: platform-team
+    tier: 1
+    dependencies: [platform-db, identity-service]
+    runbook: docs/runbooks/platform-api.md
+    dashboard: cloudwatch/application-signals/platform-api
+    on_call: platform-primary
+    telemetry: [metrics, logs, traces]
+  - id: platform-db
+    name: Platform Database
+    owner: database-team
+    tier: 1
+    dependencies: []
+    runbook: docs/runbooks/platform-db.md
+    dashboard: azure-monitor/workbooks/platform-db
+    on_call: database-primary
+    telemetry: [metrics, logs, traces]
+  - id: identity-service
+    name: Identity Service
+    owner: security-team
+    tier: 1
+    dependencies: [platform-db]
+    runbook: docs/runbooks/identity-service.md
+    dashboard: cloudwatch/application-signals/identity-service
+    on_call: security-primary
+    telemetry: [metrics, logs, traces]
+  - id: reporting-worker
+    name: Reporting Worker
+    owner: data-team
+    tier: 2
+    dependencies: [platform-db]
+    runbook: docs/runbooks/reporting-worker.md
+    dashboard: azure-monitor/workbooks/reporting-worker
+    on_call: data-primary
+    telemetry: [metrics, logs, traces]
