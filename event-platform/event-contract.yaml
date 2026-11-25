@@ -1,0 +1,18 @@
+specversion: "1.0"
+contract_version: "1.0.0"
+event_type: com.mundoactivate.learning.course-completed.v1
+source: /learning/platform-api
+subject_pattern: tenant/{tenant_id}/course/{course_id}/user/{user_id}
+datacontenttype: application/json
+owner: platform-team
+classification: internal
+retention_days: 30
+schema:
+  required: [tenant_id, user_id, course_id, completed_at, result]
+  properties:
+    tenant_id: string
+    user_id: string
+    course_id: string
+    completed_at: date-time
+    result: string
+compatibility: backward
