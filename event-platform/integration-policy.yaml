@@ -1,0 +1,38 @@
+version: 1
+delivery:
+  semantic: at-least-once
+  idempotent_consumers: true
+  duplicate_detection: true
+  retry:
+    max_attempts: 5
+    exponential_backoff: true
+    jitter: true
+  dead_letter:
+    enabled: true
+    owner: platform-operations
+    max_age_hours: 24
+ordering:
+  required_per_key: true
+  key_field: tenant_id
+  global_ordering_forbidden: true
+replay:
+  supported: true
+  isolated_consumer_group: true
+  approval_required: true
+  checkpoint_required: true
+security:
+  workload_identity: true
+  encryption_in_transit: true
+  encryption_at_rest: true
+  public_network_access: false
+  least_privilege: true
+observability:
+  trace_context_propagation: true
+  metrics: [publish_rate, consume_rate, consumer_lag, retry_count, dlq_depth]
+  logs_redacted: true
+  correlation_fields: [id, correlation_id, traceparent]
+governance:
+  schema_compatibility_gate: true
+  owner_required: true
+  retention_required: true
+  cost_tags_required: true
