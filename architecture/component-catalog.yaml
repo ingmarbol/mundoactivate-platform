@@ -1,0 +1,39 @@
+version: 1
+system: mundoactivate-platform
+components:
+  - id: learning
+    kind: modular-monolith-module
+    owner: learning-team
+    bounded_context: learning
+    dependencies: [identity, notifications]
+    database_owner: learning
+    public_api: /api/learning
+    runtime_identity: learning-workload
+    classification: confidential
+  - id: identity
+    kind: managed-boundary
+    owner: security-team
+    bounded_context: identity
+    dependencies: []
+    database_owner: identity
+    public_api: /api/identity
+    runtime_identity: identity-workload
+    classification: confidential
+  - id: notifications
+    kind: microservice
+    owner: platform-team
+    bounded_context: communications
+    dependencies: []
+    database_owner: notifications
+    public_api: /api/notifications
+    runtime_identity: notifications-workload
+    classification: internal
+  - id: reporting
+    kind: event-driven-consumer
+    owner: data-team
+    bounded_context: analytics
+    dependencies: [learning]
+    database_owner: reporting
+    public_api: /api/reports
+    runtime_identity: reporting-workload
+    classification: internal
