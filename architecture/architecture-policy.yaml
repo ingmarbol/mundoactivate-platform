@@ -1,0 +1,39 @@
+version: 1
+boundaries:
+  owner_required: true
+  bounded_context_required: true
+  circular_dependencies_forbidden: true
+  shared_database_forbidden: true
+  public_contract_required: true
+security:
+  workload_identity_required: true
+  secrets_in_code_forbidden: true
+  encryption_in_transit_required: true
+  least_privilege_required: true
+resilience:
+  timeout_required: true
+  retry_only_for_transient_failures: true
+  circuit_breaker_required: true
+  bulkhead_required: true
+  graceful_degradation_required: true
+  idempotency_required: true
+delivery:
+  independent_deployability_target: true
+  progressive_delivery_required: true
+  rollback_required: true
+  contract_tests_required: true
+  security_scans_required: true
+observability:
+  opentelemetry_required: true
+  service_name_required: true
+  slo_required: true
+  correlation_required: true
+evolution:
+  strangler_route_by_route: true
+  anti_corruption_layer_required: true
+  decommission_evidence_required: true
+  fitness_functions_in_ci: true
+cost:
+  component_cost_owner_required: true
+  cell_max_size_required: true
+  cross_cell_traffic_minimized: true
